@@ -1,0 +1,27 @@
+﻿<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
+<link href="~/Content/Site.css" rel="stylesheet" />
+
+<body onload="window.opener.location.reload();">
+
+    <div class="container margin-container">
+        <div class="text-left">
+            @ViewBag.FileStatus
+            @if (!ViewBag.subio)
+            {
+                <div class="form-group text-right">
+                    <input type="button" value="Cerrar" class="btn btn-success" onclick="window.close();" />
+                    <a href="/Banco/cargaArchivo/?doc=@ViewBag.documento" class="btn btn-primary">Intentarlo nuevamente</a>
+                </div>
+            }
+            else
+            {
+                <div class="form-group text-right">
+                    <input type="button" value="Cerrar" class="btn btn-success" onclick="window.close();" />
+                </div>
+
+            }
+
+        </div>
+    </div>
+</body>

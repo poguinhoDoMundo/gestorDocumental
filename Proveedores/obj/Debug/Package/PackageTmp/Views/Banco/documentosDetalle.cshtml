@@ -1,0 +1,14 @@
+﻿@model List<DOCUMENTO>
+
+@{
+    ViewBag.Title = "documentosDetalle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Documentos Cargados</h2>
+<hr />
+@foreach ( DOCUMENTO documento in Model )
+{
+    <h5>@documento.NOM_DOCUMENTO</h5>
+    @Html.Action("documentoEmpresa", new { doc = documento.ID_DOCUMENTO  } )
+}

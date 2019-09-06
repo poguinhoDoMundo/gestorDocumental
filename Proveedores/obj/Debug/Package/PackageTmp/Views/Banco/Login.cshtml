@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="content">
+    <br />
+    <h2 align="center">Iniciar sesion</h2>
+
+
+    @using (Html.BeginForm("Login", "Banco", FormMethod.Post, new { id = "frm-login" }))
+    {
+        <div class="form-row">
+            <div class="col-md-4 mb-3"></div>
+            <div class="col-md-4 mb-3 text-center">
+                <div class="form-group">
+                    @Html.TextBox("user", null, new { @class = "form-control", @placeholder = "Usuario" })
+                </div>
+            </div>
+            <div class="col-md-4 mb-3"></div>
+        </div>
+
+        <div class="form-row">
+            <div class="col-md-4 mb-3"></div>
+            <div class="col-md-4 mb-3 text-center">
+                <div class="form-group">
+                    @Html.Password("pass", null, new { @class = "form-control", @placeholder = "Clave" })
+                </div>
+            </div>
+            <div class="col-md-4 mb-3"></div>
+        </div>
+
+        <div class="form-group text-center">
+            <button type="submit" class="btn btn-primary">Login</button>
+        </div>
+    }
+
+    <div style="color:red" align="center">
+        @ViewBag.isValid
+    </div>
+
+    <div class="text-center"> ¿Olvido su contraseña?, <a href="@Url.Action("cambioPassword")" class="text-dark">seleccione acá para generar una nueva.</a> </div>
+
+</div>
+

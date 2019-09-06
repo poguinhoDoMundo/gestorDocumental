@@ -1,0 +1,38 @@
+﻿@if (Session["Admon"] != null)
+{
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark bg-faded">
+        <a class="navbar-brand" href="#"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <a class="navbar-brand" href="#">
+            <img src="/assets/img/UCaldas.png" width="30" height="30" class="d-inline-block align-top" alt="">
+        </a>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                @if ((USUARIO.isRevisor(Convert.ToString(Session["Admon"]))))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("RevisionDocumento")">Revisar</a>
+                    </li>
+                }
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("ResumenAdmon")">Ver Resumen</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Reportes")">Reportes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("pvDelEmpresa")">Eliminar usuarios</a>
+                </li>
+
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("LoginAdmon")">Salir</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+}

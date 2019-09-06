@@ -1,0 +1,13 @@
+﻿@model List<DOCUMENTO>
+
+<br /><br />
+<h5 class="text-center">Documentos</h5>
+<hr />
+
+@foreach (DOCUMENTO documento in Model)
+{
+    <div>
+        @documento.NOM_DOCUMENTO
+        @Html.Action("documentoEmpresaAdmon", "Banco", new {  id= ViewBag.empresa, doc= @documento.ID_DOCUMENTO  })
+    </div>
+}

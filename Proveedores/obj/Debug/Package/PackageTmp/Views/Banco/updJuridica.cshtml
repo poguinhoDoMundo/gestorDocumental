@@ -1,0 +1,184 @@
+﻿@model EMPRESA_JUR
+
+@{
+    ViewBag.Title = "updJuridica";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+
+    $(document).ready(function () {
+        var loading = $("#loading");
+        $(document).ajaxStart(function () {
+            loading.show();
+        });
+
+        $(document).ajaxStop(function () {
+            loading.hide();
+        });
+
+
+        JsonResult = [];
+
+        $.ajax({
+            dataType: 'JSON',
+            type: 'POST',
+            url: "/Banco/getActividadesString",
+            success: function (r) {
+                $("#ID_ACTIVIDAD").prop('disabled', false);
+                for (var i = 0; i < r.length; i++)
+                    JsonResult.push(r[i]);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(textStatus + ' ' + errorThrown);
+            }
+        });
+
+        //autocompletar
+        $(function () {
+            $("#ID_ACTIVIDAD").autocomplete(
+                 {
+                     source: JsonResult,
+                     minLength: 2
+                 }
+         )
+        });
+
+
+        $("#frm-updJuridica").submit(function () {
+            var form = $(this);
+
+            if   ( ($("#NATURALEZA").prop('value') == "") || ($("#ID_ACTIVIDAD").prop('value') == ""))  {
+                if ($("#ID_ACTIVIDAD").prop('value') == "")
+                    $("#errID_ACTIVIDAD").html("Seleccione una actividad economica");
+                if ($("#NATURALEZA").prop('value') == "")
+                    $("#errNaturaleza").html("Seleccione una actividad economica");
+            }
+            else {
+                $.ajax({
+                    dataType: 'JSON',
+                    type: 'POST',
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function (r) {
+                        if (r != "OK") {
+                            $("#spResultado").html(r);
+                        }
+                        else
+                            window.location.replace("/Banco/JuridicaDetalle/" + @Model.ID_EMPRESA);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert(textStatus + ' ' + errorThrown);
+                        console.log(textStatus + ' ' + errorThrown);
+                    }
+                });
+            }
+            return false;
+        })
+
+    });
+</script>
+
+<h2>Modificar datos persona Juridica</h2>
+
+@using (Html.BeginForm("updateJuridica", "Banco", FormMethod.Post, new { id = "frm-updJuridica" }))
+{
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <div id="loading" style="display:none">
+                <img src="~/assets/img/activity.gif" />
+            </div>
+        </div>
+    </div>
+
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            @Html.LabelFor(x => x.NOM_EMPRESA)
+            @Html.TextBoxFor(x => x.NOM_EMPRESA, new { @class = "form-control", @placeHolder = "Nombre/Razon social" })
+            @Html.ValidationMessageFor(x => x.NOM_EMPRESA, null, new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-md-6">
+            @Html.LabelFor(x => x.NIT)
+            @Html.TextBoxFor(x => x.NIT, new { @class = "form-control", @placeHolder = "Documento/Nit" })
+            @Html.ValidationMessageFor(x => x.NIT, null, new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            @Html.LabelFor(x => x.DIRECCION)
+            @Html.TextBoxFor(x => x.DIRECCION, new { @class = "form-control", @placeHolder = "Dirección" })
+            @Html.ValidationMessageFor(x => x.DIRECCION, null, new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-md-6">
+            @Html.LabelFor(x => x.EMAIL)
+            @Html.TextBoxFor(x => x.EMAIL, new { @class = "form-control", @placeHolder = "Correo electronico" })
+            @Html.ValidationMessageFor(x => x.EMAIL, null, new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            @Html.LabelFor(x => x.NOMREPRESENTANTE)
+            @Html.TextBoxFor(x => x.NOMREPRESENTANTE, new { @class = "form-control", @placeHolder = "Nombre del representante legal de la empresa" })
+            @Html.ValidationMessageFor(x => x.NOMREPRESENTANTE, null, new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-md-6">
+            @Html.LabelFor(x => x.CEDREPRESENTANE)
+            @Html.TextBoxFor(x => x.CEDREPRESENTANE, new { @class = "form-control", @placeHolder = "Cedula del representante legal de la empresa" })
+            @Html.ValidationMessageFor(x => x.CEDREPRESENTANE, null, new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            @Html.LabelFor(x => x.DIRECCIONPRINCI)
+            @Html.TextBoxFor(x => x.DIRECCIONPRINCI, new { @class = "form-control", @placeHolder = "Digite el domicilio de la empresa" })
+            @Html.ValidationMessageFor(x => x.DIRECCIONPRINCI, null, new { @class = "text-danger" })
+        </div>
+        <div class="form-group  col-md-6">
+            @Html.LabelFor(x => x.NATURALEZA)
+            <select class="form-control" id="NATURALEZA" name="NATURALEZA">
+                <option value="">Seleccione uno</option>
+                @if (Model.NATURALEZA == "Público")
+                {
+                    <option value="Público" selected>Público</option>
+                }
+                else
+                {
+                    <option value="Público">Público</option>
+                }
+                @if (Model.NATURALEZA == "Privado")
+                {
+                    <option value="Privado" selected>Privado</option>
+                }
+                else
+                {
+                    <option value="Privado">Privado</option>
+                }
+                @if (Model.NATURALEZA == "Mixto")
+                {
+                    <option value="Mixto" selected>Mixto</option>
+                }
+                else
+                {
+                    <option value="Mixto">Mixto</option>
+                }
+            </select>
+            <span class="text-danger" id="errNaturaleza"></span>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-12">
+         Actividad economica
+         <input type="text" class="form-control" placeholder="Buscar actividad" id="ID_ACTIVIDAD" name="ID_ACTIVIDAD" value="@ACTVIDAD_ECO.getActividadNombre(Model.ID_ACTIVIDAD)" />
+         <span class="text-danger" id="errID_ACTIVIDAD"></span>                   
+        </div>
+    </div>
+    <div class="text-danger" id="spResultado"></div>
+
+      
+    <div class="text-right">
+         <button type="submit" class="btn btn-primary">Modificar</button>
+     </div>   
+}

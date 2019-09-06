@@ -1,0 +1,46 @@
+﻿@model JURIDICA_DETALLE
+
+
+@if (Model != null)
+{
+    <h2 class="text-center">@Model.NOM_EMPRESA. <small>Nit: @Model.NIT</small></h2>
+    <hr />
+
+    <h5 class="text-center">Información de contacto</h5>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            Nit: @Model.DIRECCIONPRINCI
+        </div>
+        <div class="form-group col-md-4">
+            Direccion: @Model.DIRECCION
+        </div>
+        <div class="form-group col-md-4">
+            Email: @Model.EMAIL
+        </div>
+    </div>
+
+    <h5 class="text-center">Representante legal</h5>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            Cedula: @Model.CEDREPRESENTANE
+        </div>
+        <div class="form-group col-md-8">
+            Nombre: @Model.NOMREPRESENTANTE
+        </div>
+    </div>
+
+    <h5 class="text-center">Empresa</h5>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            Naturaleza: @Model.NATURALEZA
+        </div>
+        <div class="form-group col-md-8">
+            Actividad economica: @Model.NOM_ACTIVIDAD
+        </div>
+    </div>
+
+}
+else
+{
+    <div class="text-left">No se encuentran datos para esta empresa</div>
+}

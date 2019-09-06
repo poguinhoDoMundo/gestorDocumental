@@ -1,0 +1,149 @@
+﻿@model EMPRESA_NAT
+
+@{
+    ViewBag.Title = "updNatural";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+
+    $(document).ready(function () {
+
+        JsonResult = [];
+
+        $.ajax({
+            dataType: 'JSON',
+            type: 'POST',
+            url: "/Banco/getProfesionesString",
+            success: function (r) {
+                $("#ID_PROFESION").prop('disabled', false);
+                for (var i = 0; i < r.length; i++)
+                    JsonResult.push(r[i]);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(textStatus + ' ' + errorThrown);
+            }
+        });
+
+        //autocompletar
+        $(function () {
+            $("#ID_PROFESION").autocomplete(
+                 {
+                     source: JsonResult,
+                     minLength: 2
+                 }
+         )
+        });
+
+
+        var loading = $("#loading");
+        $(document).ajaxStart(function () {
+            loading.show();
+        });
+
+        $(document).ajaxStop(function () {
+            loading.hide();
+        });
+
+
+        $("#frm-updNatural").submit(function () {
+            var form = $(this);
+
+            if ($("#ID_PROFESION").prop('value') == "") {
+                $("#errID_PROFESION").html("Seleccione una profesion u oficio");
+            }
+            else {
+                $.ajax({
+                    dataType: 'JSON',
+                    type: 'POST',
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function (r) {
+                        if (r != "OK") {
+                            $("#spResultado").html(r);
+                        }
+                        else
+                           window.location.replace("/Banco/NaturalDetalle/" + @Model.ID_EMPRESA );
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert(textStatus + ' ' + errorThrown);
+                        console.log(textStatus + ' ' + errorThrown);
+                    }
+                });
+            }
+            return false;
+        })
+
+    });
+
+</script>
+
+
+
+<h2>Actualizar datos persona natural</h2>
+
+<hr />
+
+@using (Html.BeginForm("updateNatural", "Banco", FormMethod.Post, new { id = "frm-updNatural" }))
+{
+
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <div id="loading" style="display:none">
+                <img src="~/assets/img/activity.gif" />
+            </div>
+        </div>
+    </div>
+
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            @Html.LabelFor(x => x.NOM_EMPRESA)
+            @Html.TextBoxFor(x => x.NOM_EMPRESA, new { @class = "form-control", @placeHolder = "Nombre/Razon social" })
+            @Html.ValidationMessageFor(x => x.NOM_EMPRESA, null, new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-md-6">
+            @Html.LabelFor(x => x.NIT)
+            @Html.TextBoxFor(x => x.NIT, new { @class = "form-control", @placeHolder = "Documento/Nit" })
+            @Html.ValidationMessageFor(x => x.NIT, null, new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            @Html.LabelFor(x => x.DIRECCION)
+            @Html.TextBoxFor(x => x.DIRECCION, new { @class = "form-control", @placeHolder = "Dirección" })
+            @Html.ValidationMessageFor(x => x.DIRECCION, null, new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-md-6">
+            @Html.LabelFor(x => x.EMAIL)
+            @Html.TextBoxFor(x => x.EMAIL, new { @class = "form-control", @placeHolder = "Correo electronico" })
+            @Html.ValidationMessageFor(x => x.EMAIL, null, new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            @Html.LabelFor(x => x.LIBRETA)
+            @Html.TextBoxFor(x => x.LIBRETA, new { @class = "form-control", @placeHolder = "Libreta Militar (en caso de ser hombre)" })
+            @Html.ValidationMessageFor(x => x.LIBRETA, null, new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-md-6">
+            @Html.LabelFor(x => x.COPNIA)
+            @Html.TextBoxFor(x => x.COPNIA, new { @class = "form-control", @placeHolder = "Tarjeta profesional (en caso de aplicar)" })
+            @Html.ValidationMessageFor(x => x.COPNIA, null, new { @class = "text-danger" })
+        </div>
+    </div>
+    
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            @Html.LabelFor(x => x.ID_PROFESION)
+            <input type="text" class="form-control" placeholder="Buscar actividad" id="ID_PROFESION" name="ID_PROFESION" value="@PROFESION.getprofesionNombre(Model.ID_PROFESION)" />
+            <span class="text-danger" id="errID_PROFESION"></span>
+        </div>
+    </div>
+
+    <div class="text-danger" id="spResultado"></div>
+    
+    <div class="text-right"> 
+        <button type="submit" class="btn btn-primary">Modificar</button>
+    </div>
+}

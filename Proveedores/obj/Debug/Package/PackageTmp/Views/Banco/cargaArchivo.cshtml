@@ -1,0 +1,75 @@
+﻿@model DOCS_CARGADO
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
+<link href="~/Content/Site.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+        var loading = $("#loading");
+        $(document).ajaxStart(function () {
+            loading.show();
+        });
+
+        $(document).ajaxStop(function () {
+            loading.hide();
+        });
+    });
+
+
+    function valArchivo()
+    {
+        if ($("#file").prop('value') == "") {
+            $("#errDoc").html("Seleccione un archivo para continuar !!!");
+            return false;
+        }
+
+        return confirm('El archivo será enviado a revisión. Desea Continuar?')
+    }
+</script>
+
+<div class="container margin-container">
+    <h3>Subir @DOCUMENTO.getNomDocumento(Model.ID_DOCUMENTO)</h3>
+    <hr />
+
+    @if (ViewBag.cargado == false)
+    {
+        using (Html.BeginForm("addDocumento", "Banco", FormMethod.Post, new { enctype = "multipart/form-data", id = "frm-archivo" }))
+        {
+
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <div id="loading" style="display:none">
+                                <img src="~/assets/img/activity.gif" />
+                            </div>
+                        </div>
+                    </div>
+
+                    @Html.HiddenFor(x=>x.ID_DOCUMENTO)
+                    <div class="form-group">
+                        <input type="file" id="file" name="file" class="form-control" />
+                    </div>
+                    <div class="form-group text-right">
+                        <input type="button" value="Cerrar" class="btn btn-success" onclick="window.close();" />
+                        <input type="submit" value="Subir" class="btn btn-primary" onclick="javascript:return valArchivo()" />
+                    </div>
+               
+                <div class="text-left">
+                    <span id="errDoc"></span>
+                </div>
+
+            }
+    }
+    else
+    {
+            <div class="text-left">
+                El documento se encuentra en estado de revision.
+            </div>
+
+            <div class="form-group text-right">
+                <input type="button" value="Cerrar" class="btn btn-success" onclick="window.close();" />
+            </div>
+    }
+
+</div>

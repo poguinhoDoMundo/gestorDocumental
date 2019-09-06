@@ -1,0 +1,21 @@
+﻿@model List<DOCUMENTO>
+
+@{
+    ViewBag.Title = "cargaDocumentos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Subir documentos</h2>
+<hr />
+    @foreach (DOCUMENTO d in Model)
+    {
+        <div>
+            <a href="@Url.Action("CargaArchivo", new { doc= d.ID_DOCUMENTO } )" class="text-dark" target="_blank" onClick="window.open(this.href, this.target, 'width=640,height=320'); return false;">
+                <i class="fas fa-paperclip fa-2x clip-black"></i>
+                @d.NOM_DOCUMENTO 
+                <span class="color">
+                    <small>@DOCS_CARGADO.getEstadoNombre(ViewBag.empresa, d.ID_DOCUMENTO)</small>
+                </span>
+            </a>
+        </div>
+    }

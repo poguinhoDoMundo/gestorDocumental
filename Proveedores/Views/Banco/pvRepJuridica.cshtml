@@ -1,0 +1,40 @@
+﻿@model List<JURIDICA_DETALLE>
+
+
+@if (Model.Count > 0)
+{
+    <h5>Personas juridicas</h5>
+    <table class="table table-sm">
+        <thead>
+            <tr>
+                <th>Nombr</th>
+                <th>Nit</th>
+                <th>Actividad</th>
+                <th>Email</th>
+                <th>Ver más</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (JURIDICA_DETALLE juridica in Model)
+            {
+                <tr>
+                    <td>@juridica.NOM_EMPRESA</td>
+                    <td>@juridica.NIT</td>
+                    <td>@juridica.NOM_ACTIVIDAD</td>
+                    <td>@juridica.NOMREPRESENTANTE</td>
+                    <td>@juridica.CEDREPRESENTANE</td>
+
+                    <td>
+                        <a href="@Url.Action("TotalJuridica",new { id= juridica.ID_EMPRESA })" class="btn btn-primary btn-sm">
+                            Ver más...
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="text-left">No se encontraron personas juridicas !!!</div>
+}

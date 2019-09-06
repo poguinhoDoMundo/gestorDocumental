@@ -1,0 +1,163 @@
+﻿@model EMPRESA_JUR
+
+@{
+    ViewBag.Title = "Juridica";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script>
+
+    $(document).ready(function () {
+        JsonResult = [];
+
+        $.ajax({
+            dataType: 'JSON',
+            type: 'POST',
+            url: "/Banco/getActividadesString",
+            success: function (r) {
+                $("#ID_ACTIVIDAD").prop('disabled', false);
+                for (var i = 0; i < r.length; i++)
+                    JsonResult.push(r[i]);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(textStatus + ' ' + errorThrown);
+            }
+        });
+
+        //autocompletar
+        $(function () {
+            $("#ID_ACTIVIDAD").autocomplete(
+                 {
+                     source: JsonResult,
+                     minLength: 2
+                 }
+         )
+        });
+
+        var loading = $("#loading");
+        $(document).ajaxStart(function () {
+            loading.show();
+        });
+
+        $(document).ajaxStop(function () {
+            loading.hide();
+        });
+
+        $("#frm-juridica").submit(function () {
+            var form = $(this);
+
+            if (($("#ID_ACTIVIDAD").prop('value') == "") || ($("#NATURALEZA").prop('value') == "")) {
+                if ($("#ID_ACTIVIDAD").prop('value') == "")
+                    $("#errID_ACTIVIDAD").html("Seleccione una actividad economica");
+                if ($("#NATURALEZA").prop('value') == "")
+                    $("#errNaturaleza").html("Seleccione una naturaleza");
+            }
+            else {
+                $.ajax({
+                    dataType: 'JSON',
+                    type: 'POST',
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function (r) {
+                        if (r != "OK") {
+                            $("#spResultado").html(r);
+                        }
+                        else
+                            window.location.replace("/Banco/Message/1");
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert(textStatus + ' ' + errorThrown);
+                        console.log(textStatus + ' ' + errorThrown);
+                    }
+                });
+            }
+            return false;      
+        });
+    });
+</script>
+
+<h2>Persona Juridica</h2>
+
+@using (Html.BeginForm("addJuridica", "Banco", FormMethod.Post, new { id = "frm-juridica" }))
+{
+
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <div id="loading" style="display:none">
+                <img src="~/assets/img/activity.gif" />
+            </div>
+        </div>
+    </div>
+
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            @Html.LabelFor(x => x.NOM_EMPRESA)
+            @Html.TextBoxFor(x => x.NOM_EMPRESA, new { @class = "form-control", @placeHolder = "Nombre/Razon social" })
+            @Html.ValidationMessageFor(x => x.NOM_EMPRESA, null, new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-md-6">
+            @Html.LabelFor(x => x.NIT)
+            @Html.TextBoxFor(x => x.NIT, new { @class = "form-control", @placeHolder = "Documento/Nit" })
+            @Html.ValidationMessageFor(x => x.NIT, null, new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            @Html.LabelFor(x => x.DIRECCION)
+            @Html.TextBoxFor(x => x.DIRECCION, new { @class = "form-control", @placeHolder = "Dirección" })
+            @Html.ValidationMessageFor(x => x.DIRECCION, null, new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-md-6">
+            @Html.LabelFor(x => x.EMAIL)
+            @Html.TextBoxFor(x => x.EMAIL, new { @class = "form-control", @placeHolder = "Correo electronico" })
+            @Html.ValidationMessageFor(x => x.EMAIL, null, new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            @Html.LabelFor(x => x.NOMREPRESENTANTE)
+            @Html.TextBoxFor(x => x.NOMREPRESENTANTE, new { @class = "form-control", @placeHolder = "Nombre del representante legal de la empresa" })
+            @Html.ValidationMessageFor(x => x.NOMREPRESENTANTE, null, new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-md-6">
+            @Html.LabelFor(x => x.CEDREPRESENTANE)
+            @Html.TextBoxFor(x => x.CEDREPRESENTANE, new { @class = "form-control", @placeHolder = "Cedula del representante legal de la empresa" })
+            @Html.ValidationMessageFor(x => x.CEDREPRESENTANE, null, new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            @Html.LabelFor(x => x.DIRECCIONPRINCI)
+            @Html.TextBoxFor(x => x.DIRECCIONPRINCI, new { @class = "form-control", @placeHolder = "Digite el domicilio de la empresa" })
+            @Html.ValidationMessageFor(x => x.DIRECCIONPRINCI, null, new { @class = "text-danger" })
+        </div>
+        <div class="form-group  col-md-6">
+
+                @Html.LabelFor(x => x.NATURALEZA)
+                <select class="form-control" id="NATURALEZA" name="NATURALEZA">
+                    <option value="">Seleccione uno</option>
+                    <option value="Público">Público</option>
+                    <option value="Privado">Privado</option>
+                    <option value="Mixto">Mixto</option>
+                </select>
+                <span class="text-danger" id="errNaturaleza"></span>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            @Html.LabelFor(x => x.ID_ACTIVIDAD)
+            @Html.TextBoxFor(x => x.ID_ACTIVIDAD, new { @class = "form-control", @placeHolder = "Busque el nombre de la actividad" })
+            @Html.ValidationMessageFor(x => x.ID_ACTIVIDAD, null, new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="text-danger" id="spResultado"></div>
+    <div class="text-right">
+        <button type="submit" class="btn btn-primary">Enviar</button>
+    </div>
+}

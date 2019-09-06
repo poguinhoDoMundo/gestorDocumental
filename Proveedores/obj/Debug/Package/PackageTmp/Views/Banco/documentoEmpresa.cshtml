@@ -1,0 +1,22 @@
+﻿@model List<Detalle_documentos>
+
+@if (Model.Count == 0 )
+{
+    <ul>
+        <li><small class="text-danger">No se encontraron documentos cargados !!!</small></li>
+    </ul>
+}
+else
+{
+    <ul>
+        @foreach (Detalle_documentos documento in Model)
+        {
+            <li><small>
+                <a class="text-dark" href="@documento.RUTA" target="_blank">
+                    <i class="fas fa-paperclip fa-1x clip-black"></i>
+                    Version @documento.VERSION:
+                </a>  @documento.FECHA_CARGA @documento.NOM_ESTADO
+            </small></li>
+        }
+    </ul>
+}

@@ -1,0 +1,66 @@
+﻿
+@if (Session["tipo"] != null  && Session["id"] != null)
+{
+    string vinculo = "#";
+    string vinculoUPD = "#";
+    if (Convert.ToInt16(Session["tipo"]) == 0)
+    {
+        vinculo = "NaturalDetalle/" + Convert.ToString(Session["id"]);
+        vinculoUPD = "updNatural/";
+    }
+    if (Convert.ToInt16(Session["tipo"]) == 1)
+    {
+        vinculo = "JuridicaDetalle/" + Convert.ToString(Session["id"]);
+        vinculoUPD = "updJuridica/";
+    }
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark bg-faded">
+            <a class="navbar-brand" href="#"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <a class="navbar-brand" href="#">
+                <img src="/assets/img/UCaldas.png" width="30" height="30" class="d-inline-block align-top" alt="">
+            </a>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Datos
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="@Url.Action(vinculoUPD)">Modificar datos</a>
+                            <a class="dropdown-item" href="@Url.Action(vinculo)">Ver datos</a>
+                        </div>
+
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Documentos
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="@Url.Action("cargaDocumentos")">Subir documentos</a>
+                            <a class="dropdown-item" href="@Url.Action("documentosDetalle")">Ver documentos</a>
+                           
+                        </div>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Login")">Salir</a>
+                    </li>
+
+                </ul>
+
+                <!--
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="text" placeholder="buscar..." id="idBuscar" name="nmBuscar">
+                    <a class="btn btn-outline-primary my-2 my-sm-0"  href="javascript:searchProyecto()" >Buscar</a>
+                </form>
+                -->
+            </div>
+        </nav>
+}

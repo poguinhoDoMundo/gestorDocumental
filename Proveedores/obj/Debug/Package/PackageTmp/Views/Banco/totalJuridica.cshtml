@@ -1,0 +1,9 @@
+﻿
+@{
+    ViewBag.Title = "totalJuridica";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Action("empresaJurAdmon", "Banco", new { id= ViewBag.id })
+
+@Html.Action("documentosJurAdmon", "Banco", new { id = ViewBag.id })

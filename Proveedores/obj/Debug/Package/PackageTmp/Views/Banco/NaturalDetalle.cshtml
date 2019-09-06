@@ -1,0 +1,70 @@
+﻿@model NATURAL_DETALLE
+
+@{
+    ViewBag.Title = "NaturalDetalle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@if ( Model != null )
+{ 
+    <h1 class="text-center">@Model.NOM_EMPRESA</h1>
+    <div class="table-responsive-sm">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <td colspan="2" align="center">
+                        <div id="dvFavoritos"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Documento</b></td>
+                    <td>@Model.NIT </td>
+                </tr>
+                <tr>
+                    <td><b>Dirección</b></td>
+                    <td>@Model.DIRECCION </td>
+                </tr>
+                <tr>
+                    <td><b>Correo Electronico</b></td>
+                    <td>@Model.EMAIL</td>
+                </tr>
+                <tr>
+                    <td><b>Libreta Militar</b></td>
+                    <td>
+                        @if (Model.LIBRETA != null)
+                        {
+                            @Model.LIBRETA
+                        }
+                        else
+                        {
+                            <span>No aplica</span>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Tarjeta profesional</b></td>
+                    <td>
+                        @if (Model.COPNIA != null)
+                        {
+                            @Model.COPNIA
+                        }
+                        else
+                        {
+                            <span>No aplica</span>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Profesion u oficio</b></td>
+                    <td>@Model.NOM_PROFESION</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>    
+}
+else
+{
+    <h3>No existen personas naturales con esa referencia </h3>
+}
+

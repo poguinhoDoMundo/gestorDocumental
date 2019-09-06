@@ -1,0 +1,108 @@
+﻿@{
+    ViewBag.Title = "Reportes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script>
+
+    $(document).ready(function () {
+        var loading = $("#loading");
+        $(document).ajaxStart(function () {
+            loading.show();
+        });
+
+        $(document).ajaxStop(function () {
+            loading.hide();
+        });
+    });
+
+
+    function cargaNatural() {
+        var i = '@Url.Action("pvRepNatural")';
+        i += "/?nombre=" + $("#txNombre").prop('value');
+        i += "&profesion=" + $("#txProfesion").prop('value');
+        i += "&cedula=" + $("#txCedula").prop('value');
+        $("#dvNatural").load(encodeURI(i));
+    }
+
+    function cargaJuridica() {
+        var i = '@Url.Action("pvRepJuridica")';
+        i += "/?nombre=" + $("#txNombre").prop('value');
+        i += "&profesion=" + $("#txProfesion").prop('value');
+        i += "&cedula=" + $("#txCedula").prop('value');
+        $("#dvJuridica").load( encodeURI(i));
+    }
+
+    function carga() {
+        $("#dvNatural").html("");
+        $("#dvJuridica").html("");
+
+        if ( $("#Persona").prop('value') == "0" )
+            cargaNatural();
+        else
+            cargaJuridica();
+    }
+
+    function limpiar() {
+        $("#dvNatural").html("");
+        $("#dvJuridica").html("");
+        $("#txNombre").prop('value', "");
+        $("#txProfesion").prop('value', "");
+        $("#txCedula").prop('value', "");
+    }
+
+</script>
+
+
+<h2>Reportes</h2>
+
+<div id="loading" style="display:none" align="center">
+    <img src="~/assets/img/activity.gif" />
+</div>
+
+<div class="form-row">
+
+    <div class="form-group col-md-4">
+        <label for="txNombre">Nombre persona</label>
+        <input type="text" class="form-control" id="txNombre" placeholder="Vacio para todos...">
+    </div>
+
+    <div class="form-group col-md-4">
+        <label for="txProfesion">Profesion/Actividad</label>
+        <input type="text" class="form-control" id="txProfesion" placeholder="Vacio para todos...">
+    </div>
+
+    <div class="form-group col-md-4">
+        <label for="txNit">Nit/Cedula</label>
+        <input type="text" class="form-control" id="txCedula" placeholder="Vacio para todos...">
+    </div>
+
+</div>
+
+<div class="form-row">
+    <div class="form-group col-md-12">
+        <label for="txNombre">Persona tipo:</label>
+    </div>    
+</div>
+
+<div class="form-row">
+    <div class="form-group col-md-9">
+        <select name="Persona" id="Persona" class="form-control">
+            <option value="0">Persona natural</option>
+            <option value="1">Peronsa juridica</option>
+        </select>
+    </div>
+
+    <div class="form-group col-md-3 text-right">
+        <button type="submit" class="btn btn-danger" onclick="limpiar()">Limpiar</button>
+        <button type="submit" class="btn btn-primary" onclick="carga()" >Buscar</button>
+    </div>
+
+</div>
+<hr />
+
+<br />
+
+<div id="dvNatural"></div>
+<div id="dvJuridica"></div>

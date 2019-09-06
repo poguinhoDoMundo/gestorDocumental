@@ -1,0 +1,36 @@
+﻿@model NATURAL_DETALLE
+
+
+@if (Model != null)
+{
+    <h2 class="text-center">@Model.NOM_EMPRESA. <small>Cedula: @Model.NIT</small></h2>
+    <hr />
+
+    <h5 class="text-center">Información de contacto</h5>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            Direccion: @Model.DIRECCION
+        </div>
+        <div class="form-group col-md-4">
+            Email: @Model.EMAIL
+        </div>
+    </div>
+
+    <h5 class="text-center">Persona</h5>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            Tarjeta profesional: @Model.COPNIA
+        </div>
+        <div class="form-group col-md-4">
+            Libreta Militar: @Model.LIBRETA
+        </div>
+        <div class="form-group col-md-4">
+            Ocupacion: @Model.NOM_PROFESION
+        </div>
+    </div>
+
+}
+else
+{
+    <div class="text-left">No se encuentran datos para esta empresa</div>
+}

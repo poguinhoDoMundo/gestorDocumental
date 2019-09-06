@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Por favor seleccione su condicion:</h3>
+<br /><br />
+
+<div class="row">
+
+    <div class="col-md-2 text-center"></div>
+
+    <div class="col-md-4 text-center">
+        <a href="@Url.Action("Natural")">
+            <img class="text-center" src="~/assets/img/natural.png" height="150"  alt="Natural" />
+        </a>
+        <p class="text-center">
+            Presione la imagen si su condición es: <br />
+            <ul class="text-justify">
+                <ol>Persona natural</ol>
+            </ul>
+        </p>
+    </div>
+
+    <div class="col-md-4 text-center">
+        <a href="@Url.Action("Juridica")">
+            <img class="text-center" src="~/assets/img/juridica.png" height="150"   alt="Juridica">
+        </a>
+        <p class="text-center">
+            Presione la imagen si su condición es:<br />
+            <ul>
+                <ol>Persona juridica</ol>
+            </ul>
+        </p>
+    </div>
+
+</div>
+
+<br />
+
+<div class="text-center">
+    <a href="http://bancoproveedores.ucaldas.edu.co/banco/login" class="text-dark">
+        Si ya se encuentra registrado inicie sesion desde acá
+    </a>
+</div>
+

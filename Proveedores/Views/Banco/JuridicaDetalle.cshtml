@@ -1,0 +1,69 @@
+﻿@model JURIDICA_DETALLE
+
+@{
+    ViewBag.Title = "JuridicaDetalle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model != null)
+{
+    <h1 class="text-center">@Model.NOM_EMPRESA</h1>
+    <div class="table-responsive-sm">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <td colspan="2" align="center">
+                        <div id="dvFavoritos"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Documento</b></td>
+                    <td>@Model.NIT </td>
+                </tr>
+                <tr>
+                    <td><b>Dirección</b></td>
+                    <td>@Model.DIRECCION </td>
+                </tr>
+                <tr>
+                    <td><b>Correo Electronico</b></td>
+                    <td>@Model.EMAIL</td>
+                </tr>
+
+                <tr>
+                    <td><b>Cédula del representante legal</b></td>
+                    <td>@Model.CEDREPRESENTANE</td>
+                </tr>
+                <tr>
+                    <td><b>Nombre del representante legal</b></td>
+                    <td>@Model.NOMREPRESENTANTE</td>
+                </tr>
+
+                <tr>
+                    <td><b>Domicilio principal</b></td>
+                    <td>@Model.DIRECCIONPRINCI</td>
+                </tr>
+                <tr>
+                    <td><b>Nombre del representante legal</b></td>
+                    <td>@Model.NOMREPRESENTANTE</td>
+                </tr>
+
+                <tr>
+                    <td><b>Naturaleza</b></td>
+                    <td>@Model.NATURALEZA</td>
+                </tr>
+                <tr>
+                    <td><b>Actividad economica</b></td>
+                    <td>@Model.NOM_ACTIVIDAD</td>
+                </tr>
+
+
+            </tbody>
+        </table>
+        </div>
+        
+        }
+        else
+        {
+        <h3>No existen personas naturales con esa referencia </h3>
+        }
+

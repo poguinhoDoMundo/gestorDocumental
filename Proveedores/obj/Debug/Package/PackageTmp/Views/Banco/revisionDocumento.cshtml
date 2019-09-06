@@ -1,0 +1,106 @@
+﻿@model List<DocumentoRevision>
+
+@{
+    ViewBag.Title = "Revision de documentos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+    function revision( carga, estado, id, motivo )
+    {
+        var textMotivo = document.getElementById(motivo).value;
+        var loading = $("#loading");
+        $(document).ajaxStart(function () {
+            loading.show();
+        });
+
+        $(document).ajaxStop(function () {
+            loading.hide();
+        });
+
+
+        if ( textMotivo == "" && estado ==2  ){
+            alert("Se debe poner un motivo para los documentos rechazados !!!");
+            return;
+        }
+
+        if ( confirm("Esta seguro de realizar esta operacion ??") )
+            $.ajax({
+                dataType: 'JSON',
+                type: 'POST',
+                url: "/Banco/addRevision/?carga=" + carga + "&estado=" + estado + "&motivo=" + textMotivo + "&id_empresa=" + id,
+                success: function (r) {
+                    if (r == "OK") {
+                        alert("El documento fue evaluado !!!");
+                        location.reload();
+                    }
+                    else
+                        alert(r);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("error" + (textStatus + ' ' + errorThrown));
+                    console.log(textStatus + ' ' + errorThrown);
+                }
+            });
+    }
+</script>
+
+
+
+@if (Model.Count == 0)
+{
+    <h3>No tiene solicitudes pendientes !!! </h3>
+
+}
+else
+{
+    int i = 1;
+    <table class="table table-sm">
+        <thead>
+            <tr>
+                <th>Empresa</th>
+                <th>Documento</th>
+                <th>Fecha Solicitud</th>
+                <th>Observación</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tr>
+            <td colspan="5">
+                <div id="loading" style="display:none">
+                    <img src="~/assets/img/activity.gif" />
+                </div>
+            </td>
+        </tr>
+
+        <tbody>
+            @foreach (DocumentoRevision doc in Model)
+            {
+                    <tr>
+                        <td>@doc.NOM_EMPRESA</td>
+                        <td>
+                            <a href="@doc.RUTA" target="_blank" class="text-dark">
+                                <i class="fas fa-paperclip fa-1x clip-black"></i>
+                                @doc.NOM_DOCUMENTO
+                            </a>                        
+                        </td>
+                        <td>@doc.FECHA_CARGA </td>
+                        <td>
+                            @{ string motivo = "m" + i.ToString(); }
+                            <input class="form-control form-control-sm" type="text" placeholder="Motivo del rechazo" id="@motivo" name="@motivo">
+</td>
+
+<td>
+
+                        <a class="btn btn-success btn-sm" onclick="revision( @doc.ID_CARGA, 1, @doc.ID_EMPRESA, '@motivo'  )">Aprobar</a>
+                        <a class="btn btn-danger  btn-sm" onclick="revision( @doc.ID_CARGA, 2, @doc.ID_EMPRESA, '@motivo' )">Rechazar</a>
+                           
+                        </td>
+                    </tr>
+                    i++; 
+              }
+        </tbody>
+    </table>
+
+}
